@@ -14,10 +14,26 @@ dotenv.config();
 const app = express();
 
 connectDB(); 
+
+
+
+
+const allowedOrigins = [
+  "http://localhost:5173",                       // for local dev
+  "https://your-netlify-site.netlify.app"       // replace with actual Netlify URL
+];
+
 app.use(cors({
-  origin: "http://localhost:5173", // your frontend URL
-  credentials: true                // allow cookies/auth headers
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
 }));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
