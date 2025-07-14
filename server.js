@@ -32,6 +32,11 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/ai", aiRoutes);
 
 
+app.get("/", (req, res) => {
+  res.send("Excel Analyzer Backend is Live");
+})
+
+
 
 
 const PORT = process.env.PORT || 5000;
