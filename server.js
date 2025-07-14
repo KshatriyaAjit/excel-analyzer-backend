@@ -19,9 +19,10 @@ connectDB();
 
 
 const allowedOrigins = [
-  "http://localhost:5173",                       // for local dev
-  "https://your-netlify-site.netlify.app"       // replace with actual Netlify URL
+  "http://localhost:5173",                // local dev
+  "https://exceliq.netlify.app"          // your actual Netlify domain (no trailing slash)
 ];
+
 
 app.use(cors({
   origin: function (origin, callback) {
