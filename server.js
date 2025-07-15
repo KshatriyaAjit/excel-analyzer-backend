@@ -19,10 +19,9 @@ connectDB();
 
 
 const allowedOrigins = [
-  "http://localhost:5173",                // local dev
-  "https://exceliq.netlify.app"          // your actual Netlify domain (no trailing slash)
+  "http://localhost:5173",
+  "https://exceliq.netlify.app"
 ];
-
 
 app.use(cors({
   origin: function (origin, callback) {
@@ -32,8 +31,15 @@ app.use(cors({
       callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
 }));
+
+app.options("*", cors());
+
+
+
 
 
 app.use(express.json());
