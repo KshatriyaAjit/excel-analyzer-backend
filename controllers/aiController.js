@@ -6,19 +6,24 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 exports.generateSummary = async (req, res) => {
   try {
     const { parsedData } = req.body;
+    console.log("Received parsedData length:", parsedData?.length);
+    console.log("Gemini API Key:", !!process.env.GEMINI_API_KEY);
 
     if (!parsedData || !Array.isArray(parsedData)) {
       return res.status(400).json({ error: "No valid data provided." });
     }
 
-    const text = JSON.stringify(parsedData.slice(0, 10), null, 2); // limit size
+    const text = JSON.stringify(parsedData.slice(0, 2), null, 2); // smaller chunk
 
-    // ✅ Correct model for v1 API
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
     const result = await model.generateContent(
-      `You are a professional data analyst. Provide a clear and concise summary of the following Excel data:\n\n${text}`
+      `You are a professional data analyst. Provide a summary of this data:\n\n${text}`
     );
+
+    if (!result?.response) {
+      throw new Error("No response from Gemini.");
+    }
 
     const response = await result.response;
     const summary = response.text();
@@ -26,13 +31,7 @@ exports.generateSummary = async (req, res) => {
     res.json({ summary });
 
   } catch (error) {
-    console.error("🔥 Gemini AI error:", error);
+    console.error("🔥 Gemini AI error:", error?.message || error);
     res.status(500).json({ error: "Failed to generate summary using Gemini." });
   }
 };
-
-
-
-
-
-
