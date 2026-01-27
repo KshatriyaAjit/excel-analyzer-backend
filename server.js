@@ -50,6 +50,7 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/api/auth", authRoutes); 
 console.log("✅ Upload routes mounted");// all auth routes
+console.log("DB URI:", process.env.MONGO_URI);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/ai", aiRoutes);

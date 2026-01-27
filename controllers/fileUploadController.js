@@ -1,34 +1,9 @@
-const multer = require("multer");
-const { CloudinaryStorage } = require("multer-storage-cloudinary");
-const cloudinary = require("../config/cloudinary");
 const axios = require("axios");
 const mongoose = require("mongoose");
 const path = require("path");
 const xlsx = require("xlsx");
 const fs = require("fs");
 const FileData = require("../models/FileData");
-
-
-const storage = new CloudinaryStorage({
-  cloudinary,
-  params: {
-    folder: "excel-files",
-    resource_type: "raw", // For .xlsx and .csv
-    allowed_formats: ["xlsx", "csv"],
-  },
-});
-
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = [".xlsx", ".csv"];
-  const ext = file.originalname.split(".").pop();
-  if (allowedTypes.includes("." + ext)) {
-    cb(null, true);
-  } else {
-    cb(new Error("Only .xlsx and .csv files are allowed"));
-  }
-};
-
-const upload = multer({ storage, fileFilter });
 
 // ✅ Upload Excel File via Cloudinary URL
 const uploadExcel = async (req, res) => {
@@ -87,9 +62,7 @@ const getLatestUploadData = async (req, res) => {
 };
 
 
-// 🛑 Skip getLatestUploadData (you can implement a new one using DB + file.path)
 
-// View, History, GetUserFiles (Unchanged)
 const getHistory = async (req, res) => {
   try {
     const history = req.user.role === "admin"
@@ -125,20 +98,20 @@ const viewFileData = async (req, res) => {
   }
 };
 
-// ✅ Download from Cloudinary URL
+
 const downloadFile = async (req, res) => {
   try {
     const file = await FileData.findById(req.params.id);
     if (!file) return res.status(404).json({ message: "File not found" });
 
     res.setHeader("Content-Disposition", `attachment; filename="${file.originalName}"`);
-    res.redirect(file.path); // redirects to Cloudinary file
+    res.redirect(file.path); 
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 };
 
-// ✅ Just remove from DB (Cloudinary auto-purging optional)
+
 const deleteFile = async (req, res) => {
   try {
     const file = await FileData.findById(req.params.id);
@@ -152,7 +125,6 @@ const deleteFile = async (req, res) => {
 };
 
 module.exports = {
-  upload,
   uploadExcel,
   getHistory,
   viewFileData,

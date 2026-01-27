@@ -15,7 +15,7 @@ exports.generateSummary = async (req, res) => {
 
     const text = JSON.stringify(parsedData.slice(0, 2), null, 2); // smaller chunk
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+    const model = genAI.getGenerativeModel({ model: 'models/gemini-2.5-flash' });
 
     const result = await model.generateContent(
       `You are a professional data analyst. Provide a summary of this data:\n\n${text}`
