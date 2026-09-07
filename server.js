@@ -1,7 +1,15 @@
+const dns = require("dns");
+
+dns.setServers(["8.8.8.8", "1.1.1.1"]);
+
+const dotenv = require("dotenv");
+
+dotenv.config();
+
 const express = require("express");
 const connectDB = require("./db");
 const cors = require("cors");
-const dotenv = require("dotenv");
+
 const path = require("path");
 const adminRoutes = require("./routes/adminRoutes");
 const aiRoutes = require("./routes/aiRoutes");
@@ -9,7 +17,7 @@ const aiRoutes = require("./routes/aiRoutes");
 const authRoutes = require("./routes/authRoutes");
 const uploadRoutes = require("./routes/uploadRoutes");
 
-dotenv.config();
+
 
 const app = express();
 
