@@ -1,9 +1,6 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-/*
-|--------------------------------------------------------------------------
-| Helpers
-|--------------------------------------------------------------------------
+/* Helpers
 */
 
 /**
@@ -409,7 +406,7 @@ exports.generateSummary = async (req, res) => {
      * Use the working Gemini model
      */
     const model = genAI.getGenerativeModel({
-      model: "gemini-3.6-flash",
+      model: "gemini-3.7-flash",
     });
 
 
